@@ -151,6 +151,28 @@ def recherche_nom(nom_client):
     data = cursor.fetchall()
     conn.close()
     return render_template('read_data.html', data=data)
+
+# Route pour ajouter un livre (Action du formulaire)
+@app.route('/ajouter_livre', methods=['POST'])
+def ajouter_livre():
+    # 1. Vérification de sécurité : Seul l'admin peut ajouter
+    if not est_authentifie():
+        return redirect(url_for('authentification'))
+    
+    # 2. Récupération des données tapées dans le formulaire
+    titre = request.form['titre']
+    auteur = request.form['auteur']
+    genre = request.form['genre']
+
+    # 3. Connexion et Enregistrement dans la Base de Données
+    conn = sqlite3.connect('database.db')
+    conn.execute('INSERT INTO livres (titre, auteur, genre) VALUES (?, ?, ?)', 
+                 (titre, auteur, genre))
+    conn.commit()
+    conn.close()
+
+    # 4. On retourne à la page d'accueil pour voir le nouveau livre
+    return redirect(url_for('hello_world'))
                                                                                               
 if __name__ == "__main__":
   app.run(debug=True)
