@@ -69,7 +69,7 @@ def emprunter(id_livre):
     conn = sqlite3.connect('database.db')
     # 1. Créer l'emprunt
     conn.execute('INSERT INTO emprunts (id_client, id_livre) VALUES (?, ?)', (id_client, id_livre))
-    # 2. Mettre à jour le stock
+    # 2. Mettre à jour le stock (disponible = 0)
     conn.execute('UPDATE livres SET disponible = 0 WHERE id = ?', (id_livre,))
     conn.commit()
     conn.close()
@@ -77,11 +77,16 @@ def emprunter(id_livre):
 
 @app.route('/rendre/<int:id_livre>', methods=['POST'])
 def rendre(id_livre):
-    conn = sqlite3.connect('database.db')
-    conn.execute('UPDATE livres SET disponible = 1 WHERE id = ?', (id_livre,))
-    conn.commit()
-    conn.close()
-    return redirect(url_for('hello_world'))
+    try:
+        conn = sqlite3.connect('database.db')
+        # On remet le statut à 1 (Disponible)
+        conn.execute('UPDATE livres SET disponible = 1 WHERE id = ?', (id_livre,))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('hello_world'))
+    except Exception as e:
+        # Affiche l'erreur si la base de données a un problème
+        return f"<h1>Erreur lors du rendu : {e}</h1><p>Vérifiez que la colonne 'disponible' existe bien dans la table 'livres'.</p>"
 
 # --- AUTHENTIFICATION ---
 
@@ -121,7 +126,7 @@ def enregistrer_client():
     prenom = request.form['prenom']
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    # Ta valeur spécifique 1002938
+    # Insertion avec ta valeur spécifique pour created
     cursor.execute('INSERT INTO clients (created, nom, prenom, adresse) VALUES (?, ?, ?, ?)', (1002938, nom, prenom, "ICI"))
     conn.commit()
     conn.close()
@@ -148,9 +153,6 @@ def recherche_nom(nom_client):
     data = cursor.fetchall()
     conn.close()
     return render_template('read_data.html', data=data)
-
-# Route inutile /lecture supprimée car redondante avec l'accueil, 
-# mais tu peux la remettre si tu y tiens vraiment.
 
 if __name__ == "__main__":
     app.run(debug=True)
