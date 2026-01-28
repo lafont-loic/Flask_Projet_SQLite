@@ -36,18 +36,23 @@
         <div class="card-header bg-primary text-white">Ajouter un nouveau livre</div>
         <div class="card-body">
             <form action="/ajouter_livre" method="post" class="row g-2 align-items-center">
+                
                 <div class="col-md-4">
                     <input type="text" name="titre" class="form-control" placeholder="Titre du livre" required>
                 </div>
+                
                 <div class="col-md-4">
                     <input type="text" name="auteur" class="form-control" placeholder="Auteur" required>
                 </div>
+                
                 <div class="col-md-3">
-                    <input type="text" name="genre" class="form-control" placeholder="Genre">
+                    <input type="text" name="genre" class="form-control" placeholder="Genre (ex: Roman)">
                 </div>
+                
                 <div class="col-md-1">
-                    <button type="submit" class="btn btn-success w-100">+</button>
+                    <button type="submit" class="btn btn-success w-100">Ajouter</button>
                 </div>
+
             </form>
         </div>
     </div>
