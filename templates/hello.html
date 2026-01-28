@@ -10,8 +10,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
         <h1 class="text-primary">📚 Ma Bibliothèque</h1>
         <div>
-            <a href="/consultation/" class="btn btn-outline-info me-2">👥 Gérer les Clients</a>
-            
+            <a href="/consultation/" class="btn btn-outline-info me-2">👥 Clients & IDs</a>
             {% if admin %}
                 <span class="badge bg-success me-2">Mode Admin</span>
                 <a href="/logout" class="btn btn-danger btn-sm">Déconnexion</a>
@@ -24,8 +23,8 @@
     <div class="card bg-light mb-4">
         <div class="card-body">
             <form action="/" method="get" class="d-flex gap-2">
-                <input type="text" name="recherche" class="form-control" placeholder="Rechercher un titre ou un auteur...">
-                <button type="submit" class="btn btn-secondary">🔍 Rechercher</button>
+                <input type="text" name="recherche" class="form-control" placeholder="Rechercher un livre...">
+                <button type="submit" class="btn btn-secondary">🔍</button>
                 <a href="/" class="btn btn-outline-secondary">Reset</a>
             </form>
         </div>
@@ -33,26 +32,13 @@
 
     {% if admin %}
     <div class="card border-primary mb-4">
-        <div class="card-header bg-primary text-white">Ajouter un nouveau livre</div>
+        <div class="card-header bg-primary text-white">Ajouter un livre</div>
         <div class="card-body">
             <form action="/ajouter_livre" method="post" class="row g-2 align-items-center">
-                
-                <div class="col-md-4">
-                    <input type="text" name="titre" class="form-control" placeholder="Titre du livre" required>
-                </div>
-                
-                <div class="col-md-4">
-                    <input type="text" name="auteur" class="form-control" placeholder="Auteur" required>
-                </div>
-                
-                <div class="col-md-3">
-                    <input type="text" name="genre" class="form-control" placeholder="Genre (ex: Roman)">
-                </div>
-                
-                <div class="col-md-1">
-                    <button type="submit" class="btn btn-success w-100">Ajouter</button>
-                </div>
-
+                <div class="col-md-4"><input type="text" name="titre" class="form-control" placeholder="Titre" required></div>
+                <div class="col-md-4"><input type="text" name="auteur" class="form-control" placeholder="Auteur" required></div>
+                <div class="col-md-3"><input type="text" name="genre" class="form-control" placeholder="Genre"></div>
+                <div class="col-md-1"><button type="submit" class="btn btn-success w-100">+</button></div>
             </form>
         </div>
     </div>
@@ -65,9 +51,8 @@
                 <tr>
                     <th>Titre</th>
                     <th>Auteur</th>
-                    <th>Genre</th>
                     <th>État</th>
-                    <th>Actions</th>
+                    <th style="min-width: 200px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -75,8 +60,6 @@
                 <tr>
                     <td class="fw-bold">{{ livre['titre'] }}</td>
                     <td>{{ livre['auteur'] }}</td>
-                    <td><span class="badge bg-secondary">{{ livre['genre'] }}</span></td>
-                    
                     <td>
                         {% if livre['disponible'] == 1 %}
                             <span class="badge bg-success">En Rayon</span>
@@ -84,30 +67,31 @@
                             <span class="badge bg-warning text-dark">Emprunté</span>
                         {% endif %}
                     </td>
-
                     <td>
                         {% if livre['disponible'] == 1 %}
+                            
                             <form action="/emprunter/{{ livre['id'] }}" method="post" class="d-flex align-items-center">
-                                <input type="number" name="id_client" placeholder="ID Client" class="form-control form-control-sm me-1" style="width: 80px;" required>
+                                <input type="number" name="id_client" placeholder="ID Client" class="form-control form-control-sm me-1" style="width: 100px;" required>
                                 <button type="submit" class="btn btn-sm btn-primary">Emprunter</button>
                             </form>
+
                         {% else %}
+                            
                             <form action="/rendre/{{ livre['id'] }}" method="post" class="d-inline">
                                 <button type="submit" class="btn btn-sm btn-info text-white">Rendre</button>
                             </form>
+
                         {% endif %}
 
                         {% if admin %}
-                            <form action="/supprimer_livre/{{ livre['id'] }}" method="post" class="d-inline ms-2" onsubmit="return confirm('Supprimer ce livre ?');">
+                            <form action="/supprimer_livre/{{ livre['id'] }}" method="post" class="d-inline ms-2" onsubmit="return confirm('Supprimer ?');">
                                 <button type="submit" class="btn btn-sm btn-outline-danger">X</button>
                             </form>
                         {% endif %}
                     </td>
                 </tr>
                 {% else %}
-                <tr>
-                    <td colspan="5" class="text-center text-muted">Aucun livre trouvé dans la bibliothèque.</td>
-                </tr>
+                <tr><td colspan="4" class="text-center">Aucun livre.</td></tr>
                 {% endfor %}
             </tbody>
         </table>
