@@ -198,6 +198,16 @@ def supprimer_tache(id):
     conn.close()
     return redirect(url_for('dashboard_tasks'))
 
+@app.route('/terminer_tache/<int:id>', methods=['POST'])
+def terminer_tache(id):
+    conn = sqlite3.connect('tasks.db')
+    # On met à jour la colonne 'termine' pour l'id correspondant
+    conn.execute('UPDATE tasks SET termine = 1 WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    # On redirige vers le dashboard pour voir le changement
+    return redirect(url_for('dashboard_tasks'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
