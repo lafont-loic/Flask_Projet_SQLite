@@ -40,6 +40,15 @@
                 <td>{{ task['date_echeance'] }}</td>
                 <td>{{ "✅" if task['termine'] == 1 else "⏳" }}</td>
                 <td>
+                    {% if task['termine'] == 0 %}
+                <form action="{{ url_for('terminer_tache', id=task['id']) }}" method="POST" style="display:inline;">
+                    <button type="submit" style="background-color: #27ae60; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+                        ✔️ Terminer
+                    </button>
+                </form>
+            {% else %}
+                <span style="color: #27ae60; font-weight: bold;">Complétée</span>
+            {% endif %}
                     <form action="{{ url_for('supprimer_tache', id=task['id']) }}" method="POST">
                         <button type="submit" class="btn btn-del" onclick="return confirm('Supprimer ?')">Supprimer</button>
                     </form>
