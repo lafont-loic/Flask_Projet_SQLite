@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter une tâche</title>
+    <style>
+        form { display: flex; flex-direction: column; width: 300px; gap: 10px; margin: 50px auto; }
+        input, textarea, button { padding: 10px; }
+        button { background: #3498db; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Nouvelle Tâche</h1>
+    
+    <form action="{{ url_for('ajouter_tache') }}" method="POST">
+        <label>Titre :</label>
+        <input type="text" name="titre" required placeholder="Ex: Finir TP IT">
+        
+        <label>Description :</label>
+        <textarea name="description" placeholder="Détails de la tâche..."></textarea>
+        
+        <label>Date d'échéance :</label>
+        <input type="date" name="date_echeance" required>
+        
+        <button type="submit">Enregistrer la tâche</button>
+        <a href="{{ url_for('dashboard_tasks') }}" style="text-align: center;">Annuler</a>
+    </form>
+</body>
+</html>
