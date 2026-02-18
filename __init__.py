@@ -173,6 +173,10 @@ def dashboard_tasks():
     conn.close()
     return render_template('dashboard_tasks.html', taches=taches)
 
+@app.route('/tasks/nouveau')
+def formulaire_tache():
+    return render_template('ajouter_tache.html')
+
 @app.route('/ajouter_tache', methods=['POST'])
 def ajouter_tache():
     titre = request.form['titre']
