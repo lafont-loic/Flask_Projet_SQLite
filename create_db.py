@@ -40,6 +40,23 @@ cur.execute("INSERT INTO emprunts (id_client, id_livre) VALUES (?, ?)",(2, 3)) #
 print("Mise à jour des statuts des livres...")
 cur.execute("UPDATE livres SET disponible = 0 WHERE id IN (SELECT id_livre FROM emprunts)")
 
+# --- CRÉATION DE LA DEUXIÈME BDD (PROJET IT TÂCHES) ---
+print("Création de la base tasks.db...")
+conn_tasks = sqlite3.connect('tasks.db')
+
+# On utilise un fichier SQL différent pour ne pas mélanger
+with open('schema_tasks.sql') as f:
+    conn_tasks.executescript(f.read())
+
+print("Insertion d'une tâche d'exemple...")
+cur_tasks = conn_tasks.cursor()
+cur_tasks.execute("INSERT INTO tasks (titre, description, date_echeance) VALUES (?, ?, ?)", 
+                 ('Projet IT', 'Finaliser le dashboard des tâches', '2026-06-15'))
+
+conn_tasks.commit()
+conn_tasks.close()
+print("✅ Base tasks.db créée avec succès !")
+
 connection.commit()
 connection.close()
 print("✅ Base de données réinitialisée avec succès !")
