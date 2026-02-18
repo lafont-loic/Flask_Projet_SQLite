@@ -9,12 +9,12 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'  # Clé secrète pour les sessions
 def est_authentifie():
     """Vérifie si l'utilisateur est connecté comme admin"""
     return session.get('authentifie')
-    
+
 # --- NOUVELLE ROUTE D'ACCUEIL (CHOIX DE L'APP) ---
 @app.route('/')
 def portail():
     return render_template('index_choix.html')
-    
+
 # --- ROUTE PRINCIPALE (TABLEAU DE BORD LIVRES) ---
 @app.route('/hello')
 def hello_world():
