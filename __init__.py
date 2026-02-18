@@ -9,9 +9,13 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'  # Clé secrète pour les sessions
 def est_authentifie():
     """Vérifie si l'utilisateur est connecté comme admin"""
     return session.get('authentifie')
-
-# --- ROUTE PRINCIPALE (TABLEAU DE BORD LIVRES) ---
+    
+# --- NOUVELLE ROUTE D'ACCUEIL (CHOIX DE L'APP) ---
 @app.route('/')
+def portail():
+    
+# --- ROUTE PRINCIPALE (TABLEAU DE BORD LIVRES) ---
+@app.route('/hello')
 def hello_world():
     # Connexion spécifique pour la bibliothèque
     conn = sqlite3.connect('database.db')
