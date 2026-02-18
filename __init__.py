@@ -161,17 +161,17 @@ def recherche_nom(nom_client):
 
 # --- APPLICATION GESTION DE TÂCHES (Nouvelle BDD : tasks.db) ---
 
-@app.route('/tasks')
-def dashboard_tasks():
-    return "L'application fonctionne, le problème vient donc du fichier HTML."
 #@app.route('/tasks')
 #def dashboard_tasks():
- #   conn = sqlite3.connect('tasks.db') # Utilise la nouvelle BDD
-  #  conn.row_factory = sqlite3.Row
-   # cursor = conn.execute('SELECT * FROM tasks')
-    #taches = cursor.fetchall()
-    #conn.close()
-    #return render_template('dashboard_tasks.html', taches=taches)
+ #   return "L'application fonctionne, le problème vient donc du fichier HTML."
+@app.route('/tasks')
+def dashboard_tasks():
+    conn = sqlite3.connect('tasks.db') # Utilise la nouvelle BDD
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute('SELECT * FROM tasks')
+    taches = cursor.fetchall()
+    conn.close()
+    return render_template('dashboard_tasks.html', taches=taches)
 
 @app.route('/ajouter_tache', methods=['POST'])
 def ajouter_tache():
