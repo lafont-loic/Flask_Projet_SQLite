@@ -13,6 +13,7 @@ def est_authentifie():
 # --- NOUVELLE ROUTE D'ACCUEIL (CHOIX DE L'APP) ---
 @app.route('/')
 def portail():
+    return render_template('index_choix.html')
     
 # --- ROUTE PRINCIPALE (TABLEAU DE BORD LIVRES) ---
 @app.route('/hello')
