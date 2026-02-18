@@ -159,9 +159,38 @@ def recherche_nom(nom_client):
     conn.close()
     return render_template('read_data.html', data=data)
 
+# --- APPLICATION GESTION DE TÂCHES (Nouvelle BDD : tasks.db) ---
+
 @app.route('/tasks')
 def dashboard_tasks():
-    return "<h1>Page des tâches en cours de développement</h1><a href='/'>Retour</a>"
+    conn = sqlite3.connect('tasks.db') # Utilise la nouvelle BDD
+    conn.row_factory = sqlite3.Row
+    cursor = conn.execute('SELECT * FROM tasks')
+    taches = cursor.fetchall()
+    conn.close()
+    return render_template('dashboard_tasks.html', taches=taches)
+
+@app.route('/ajouter_tache', methods=['POST'])
+def ajouter_tache():
+    titre = request.form['titre']
+    description = request.form['description']
+    date_e = request.form['date_echeance']
+    
+    conn = sqlite3.connect('tasks.db')
+    conn.execute('INSERT INTO tasks (titre, description, date_echeance) VALUES (?, ?, ?)', 
+                 (titre, description, date_e))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('dashboard_tasks'))
+
+@app.route('/supprimer_tache/<int:id>', methods=['POST'])
+def supprimer_tache(id):
+    conn = sqlite3.connect('tasks.db')
+    conn.execute('DELETE FROM tasks WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('dashboard_tasks'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
