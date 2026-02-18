@@ -159,5 +159,9 @@ def recherche_nom(nom_client):
     conn.close()
     return render_template('read_data.html', data=data)
 
+@app.route('/tasks')
+def dashboard_tasks():
+    return "<h1>Page des tâches en cours de développement</h1><a href='/'>Retour</a>"
+
 if __name__ == "__main__":
     app.run(debug=True)
